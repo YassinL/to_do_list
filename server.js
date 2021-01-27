@@ -6,7 +6,13 @@ const server = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-const routes= require('./src/routes');
+const routes = require('./src/routes');
+
+const {
+  notFoundHandler,
+  errorLogger,
+  errorHandler,
+} = require('./src/middlewares');
 
 // Middleware
 server.use(cors());
@@ -18,8 +24,8 @@ server.use(morgan('dev'));
 server.use('/api', routes);
 
 // Gestion des erreurs
-// server.use('*', notFoundHandler);
-// server.use(errorLogger);
-// server.use(errorHandler);
+server.use('*', notFoundHandler);
+server.use(errorLogger);
+server.use(errorHandler);
 
 module.exports = server;
