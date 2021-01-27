@@ -1,18 +1,20 @@
 const express = require('express');
-const { addUser, checkEmail } = require('../controllers/users');
+const {
+  addUser,
+  checkEmail,
+  login,
+} = require('../controllers/users');
 const {
   ValidationError,
   ConflictError,
 } = require('../helpers/errors');
 const usersRouter = express.Router();
 
-const { CREATED } = require('../helpers/status_code');
+const { CREATED, OK } = require('../helpers/status_code');
 const { userValidation } = require('../validators');
 
 usersRouter.post('/signup', async (request, response) => {
-  console.log(request.body);
   const { email } = request.body;
-
   const user = request.body;
 
   const errors = userValidation(user);
@@ -28,6 +30,12 @@ usersRouter.post('/signup', async (request, response) => {
       'Un utilisateur utilisant cette adresse email est déjà enregistré',
     );
   }
+});
+
+usersRouter.post('/signin', async (request, response) => {
+  const { email, password } = request.body;
+  const token = await login(email, password);
+  response.status(OK).json({ token });
 });
 
 module.exports = usersRouter;

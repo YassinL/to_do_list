@@ -39,7 +39,7 @@ const emailValidation = (email) => {
   if (!EMAIL_REGEX.test(email)) {
     return "l'email doit contenir un @";
   }
-  if (email.length < 255) {
+  if (!email.length < 255) {
     return "L'email doit contenir moins de 255 caractères";
   }
   return null;
