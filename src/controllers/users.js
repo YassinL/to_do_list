@@ -1,7 +1,4 @@
-const {
-  ConflictError,
-  UnAuthorizedError,
-} = require('../helpers/errors');
+const { UnAuthorizedError } = require('../helpers/errors');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const { pick } = require('lodash');
@@ -10,6 +7,7 @@ const bcrypt = require('bcrypt');
 const { Users } = require('../models');
 
 const usersAttributes = [
+  'id',
   'firstName',
   'lastName',
   'email',
@@ -64,8 +62,8 @@ module.exports = {
     const secretKey = process.env.JWT_SIGN_SECRET;
     const token = jwt.sign(
       {
-        id: userFound.id,
         email: userFound.email,
+        id: userFound.id,
       },
       secretKey,
       {

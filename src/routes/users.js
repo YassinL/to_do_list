@@ -1,8 +1,10 @@
+const { request } = require('express');
 const express = require('express');
 const {
   addUser,
   checkEmail,
   login,
+  getUserById,
 } = require('../controllers/users');
 const {
   ValidationError,
@@ -11,6 +13,7 @@ const {
 const usersRouter = express.Router();
 
 const { CREATED, OK } = require('../helpers/status_code');
+const { isAuth } = require('../middlewares');
 const { userValidation } = require('../validators');
 
 usersRouter.post('/signup', async (request, response) => {
