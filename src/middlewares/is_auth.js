@@ -24,7 +24,6 @@ module.exports = async (request, response, next) => {
       );
     }
     request.user = user;
-    console.log(request.user);
     next();
   });
 };

@@ -31,9 +31,7 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
-      userId: {
-        type: DataTypes.INTEGER,
-      },
+      urlName: DataTypes.STRING,
     },
     {
       sequelize,
