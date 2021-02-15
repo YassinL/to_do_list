@@ -1,10 +1,8 @@
-const { request } = require('express');
 const express = require('express');
 const {
   addUser,
   checkEmail,
   login,
-  getUserById,
 } = require('../controllers/users');
 const {
   ValidationError,

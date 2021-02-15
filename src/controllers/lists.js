@@ -1,6 +1,5 @@
 const { NotFoundError } = require('../helpers/errors');
-const { Lists, Users } = require('../models');
-const { getUserById, getUserByEmail } = require('./users');
+const { Lists, Users, Tasks } = require('../models');
 
 const listsAttributes = ['name', 'urlName'];
 
@@ -33,6 +32,11 @@ module.exports = {
         {
           model: Users,
           attributes: ['email'],
+          raw: true,
+        },
+        {
+          model: Tasks,
+          attributes: ['name', 'description'],
           raw: true,
         },
       ],
