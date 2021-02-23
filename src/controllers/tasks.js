@@ -55,6 +55,27 @@ module.exports = {
     return task;
   },
 
+  updateTasks: async (data, id) => {
+    const taskFound = await Tasks.findOne({
+      where: { id: id },
+      // attributes: listsAttributes,
+      include: [
+        {
+          model: Lists,
+          attributes: ['name'],
+          raw: true,
+        },
+      ],
+    });
+    if (!taskFound) {
+      throw new NotFoundError(
+        'Ressource introuvable',
+        "Cette liste n'existe pas",
+      );
+    }
+    return taskFound.update(data);
+  },
+
   deleteTask: async (id) => {
     const listFound = await Tasks.findOne({
       where: { id: id },

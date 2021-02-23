@@ -1,7 +1,7 @@
 const { NotFoundError } = require('../helpers/errors');
 const { Lists, Users, Tasks } = require('../models');
 
-const listsAttributes = ['name', 'urlName'];
+const listsAttributes = ['id', 'name', 'urlName'];
 
 module.exports = {
   addLists: async (data, userId) => {
@@ -53,14 +53,19 @@ module.exports = {
     return findList;
   },
 
-  getList: async (urlName) => {
+  getList: async (id) => {
     const list = await Lists.findOne({
-      where: { urlName: urlName },
+      where: { id: id },
       attributes: listsAttributes,
       include: [
         {
           model: Users,
           attributes: ['email'],
+          raw: true,
+        },
+        {
+          model: Tasks,
+          attributes: ['name', 'description'],
           raw: true,
         },
       ],
@@ -74,9 +79,9 @@ module.exports = {
     return list;
   },
 
-  deleteLists: async (urlName) => {
+  deleteLists: async (id) => {
     const listFound = await Lists.findOne({
-      where: { urlName: urlName },
+      where: { id: id },
     });
     if (!listFound) {
       throw new NotFoundError(
@@ -89,9 +94,9 @@ module.exports = {
     });
   },
 
-  updateLists: async (data, urlName) => {
+  updateLists: async (data, id) => {
     const listFound = await Lists.findOne({
-      where: { urlName: urlName },
+      where: { id: id },
       // attributes: listsAttributes,
       include: [
         {

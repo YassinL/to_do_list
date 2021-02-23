@@ -4,11 +4,10 @@ const {
   getAllTasks,
   getTask,
   deleteTask,
+  updateTasks,
 } = require('../controllers/tasks');
-const {
-  ValidationError,
-  ConflictError,
-} = require('../helpers/errors');
+const { ValidationError } = require('../helpers/errors');
+const { taskValidation } = require('../validators');
 const { CREATED, OK } = require('../helpers/status_code');
 const tasksRouter = express.Router();
 
@@ -18,8 +17,9 @@ tasksRouter.post(
   '/tasks/:listId',
   isAuth,
   async (request, response) => {
-    const errors = userValidation(user);
-    if (errors) throw new ValidationError(errors);
+    // const task = request.body;
+    // const errors = taskValidation(task);
+    // if (errors) throw new ValidationError(errors);
 
     const newTask = await addTasks(
       request.params.listId,
@@ -45,6 +45,24 @@ tasksRouter.get(
     console.log(request.params);
     const task = await getTask(request.params.id);
     response.status(OK).json(task);
+  },
+);
+
+tasksRouter.patch(
+  '/tasks/:listId/:id',
+  isAuth,
+  async (request, response) => {
+    const task = request.body;
+    const errors = taskValidation(task);
+    if (errors) throw new ValidationError(errors);
+
+    const updateTask = await updateTasks(
+      request.body,
+      request.params.id,
+    );
+    response
+      .status(OK)
+      .json({ updateTask, message: ' la tâche a été modifié ' });
   },
 );
 

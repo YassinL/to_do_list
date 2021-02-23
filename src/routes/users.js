@@ -3,6 +3,7 @@ const {
   addUser,
   checkEmail,
   login,
+  getUserById,
 } = require('../controllers/users');
 const {
   ValidationError,
@@ -37,6 +38,14 @@ usersRouter.post('/signin', async (request, response) => {
   const { email, password } = request.body;
   const token = await login(email, password);
   response.status(OK).json({ token });
+});
+
+usersRouter.get('/user/me', isAuth, async (request, response) => {
+  console.log('request.user', request.user.id);
+  const user = await getUserById(request.user.id);
+  if (user) {
+    response.status(OK).json({ user: { email: user.email } });
+  }
 });
 
 module.exports = usersRouter;

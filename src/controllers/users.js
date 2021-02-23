@@ -33,6 +33,10 @@ module.exports = {
     });
   },
 
+  getUserById: (userId) => {
+    return Users.findByPk(userId);
+  },
+
   login: async (email, password) => {
     const userFound = await Users.findOne({
       where: { email },
@@ -44,7 +48,7 @@ module.exports = {
     if (!userFound) {
       throw new UnAuthorizedError(
         'Utilisateur non authentifié ',
-        "Le nom d'utilisateur n'est pas correct",
+        "Le nom d'utilisateur est incorrect",
       );
     }
 
@@ -55,7 +59,7 @@ module.exports = {
     if (!comparePassword) {
       throw new UnAuthorizedError(
         'Utilisateur non authentifié ',
-        "Le mot de passe n'est pas correct",
+        'Le mot de passe est incorrect',
       );
     }
 
